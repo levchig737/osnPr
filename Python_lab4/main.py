@@ -26,7 +26,7 @@ def load():
 
 """
 Проверка json файла на ошибки
-Вызывается в check()
+Вызывается в check() и в save_as()
 """
 def is_JSON(data):
     try:
@@ -50,12 +50,12 @@ def check():
 Сохранение файла в выбранной пользователем директории
 """
 def save_as():
-    files = [('All Files', '*.*'), 
-             ('Python Files', '*.py'),
-             ('Text Document', '*.txt'),
-             ("json files", '*.json')]
-    file = filedialog.asksaveasfile(mode='w', defaultextension=".json", filetypes=[("json files", '*.json')])
-    file.write(text_box.get(1.0, END))
+    if is_JSON(text_box.get(1.0, END)):
+        file = filedialog.asksaveasfile(mode='w', defaultextension=".json", filetypes=[("json files", '*.json')])
+        file.write(text_box.get(1.0, END))
+    else:
+        message_box.showerror(title="Syntax checker", message="Invalid syntax")
+
 
 window = Tk()                                   # Запускаем Tkinter
 window.geometry('800x600')                      # Задаём размеры
@@ -75,7 +75,7 @@ file_menu.add_command(label="Save as", command=save_as) # Сохранение �
 text_box = Text(wrap=WORD)                             # Создаем техтовый блок
 text_box.pack(side='left', fill='both', expand=True)   # Размещаем в главном окне и убираем отступы
 
-scroll = Scrollbar(window)                          # Создаем скроллбар для полосы прокрутки
+scroll = Scrollbar(window)                          # Создаем полосу прокрутки
 scroll.pack(side=LEFT, fill=Y)
 text_box.config(yscrollcommand=scroll.set)
 
