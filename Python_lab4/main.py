@@ -7,10 +7,11 @@ import json
 from tkinter import scrolledtext
 
 
+
+
 """
 Функция загрузки json файла по ссылке
 """
-
 def load():
     try:
         url = tkSimpleDialog.askstring("", "Enter a url:")
