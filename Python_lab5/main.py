@@ -1,8 +1,9 @@
 import csv
 import statistics
 import sys
-from split_data_function import split_data
 
+from split_data_function import split_data
+from pathlib import Path
 
 
 
@@ -14,12 +15,21 @@ from split_data_function import split_data
 def read_data_from_file(path):
     data = []
 
+    #  Проверка на тип файла
+    if Path(path).suffix != '.csv':
+        return  [-3, "Isn't .csv file"]
+
     # Проверка исключений
     try:
         # Чтение файла
         with open(path) as file:
             data_reader = csv.reader(file)
             for i in data_reader:
+
+                # Проверка на пустую колонку
+                if len(i) != 2:
+                    return [-4, "Missing data"]
+
                 data.append(i)
             data.pop(0)
     
@@ -31,11 +41,14 @@ def read_data_from_file(path):
     except PermissionError:
         return [-2, "Can't read"]
 
-    # Преобразование к типу float
     result_array = []
-    for i in range(len(data)):
-        result_array.append(list(map(float, data[i])))
-    
+
+    # Преобразование к типу float
+    try:
+        for i in range(len(data)):
+            result_array.append(list(map(float, data[i])))
+    except ValueError:
+        return [-4, "Missing data"]
     return [0, result_array]
 
 
@@ -46,14 +59,25 @@ def read_data_from_file(path):
 """
 def calculate_statistics(segment):
     data_statistics = dict()
+    
+    # Массив с value переданного сегмента
+    data = []
+
+    for i in segment:
+        data.append(i[1])
+
+    data_statistics["start"] = segment[0][0]
     data_statistics["len"] = len(segment)
-    data_statistics["mean"] = statistics.mean(segment[1])
-    data_statistics["mode"] = statistics.mode(segment[1])
-    data_statistics["median"] = statistics.median(segment[1])
+    data_statistics["mean"] = statistics.mean(data)
+    data_statistics["mode"] = statistics.mode(data)
+    data_statistics["median"] = statistics.median(data)
+    data_statistics["end"] = segment[len(segment)-1][0]
+    
     return data_statistics
 
 
 def main(path = "data/example.csv", interval = 5):
+
     # Чтение файла
     res, data = read_data_from_file(path)
     
@@ -65,13 +89,15 @@ def main(path = "data/example.csv", interval = 5):
     segments = split_data(data, interval)
 
     output = []
+
     # Вывод статистики
-    for i in range(len(segments)-1):
+    for i in range(len(segments)):
         stats = calculate_statistics(segments[i])
         print(stats)
-        output.append(stats)
+        output.append(stats) 
 
     return [0, output]
+
 
 # Основное тело программы
 if __name__ == "__main__":
@@ -87,4 +113,3 @@ if __name__ == "__main__":
             interval = sys.argv[2]
 
     res, output = main(path, interval)
-    
