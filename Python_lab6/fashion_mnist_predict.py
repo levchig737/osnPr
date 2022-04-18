@@ -21,6 +21,8 @@ def main():
 
     image = Image.fromarray(pixels, "L")
 
+
+    # Запуск разпознавания объекта
     prediction = model.predict(numpy.reshape(x_train[object_to_predict], (1, 784)))
 
     print("Object",
@@ -31,6 +33,7 @@ def main():
           numpy.max(prediction*100),
           "percents")
 
+    # Вывод изображения на экран
     image.show()
 
 
