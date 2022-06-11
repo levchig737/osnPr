@@ -19,5 +19,4 @@ def split_data(data, interval):
             cur_seg.clear()
             cur_seg.append(data[i])
     segments.append(cur_seg)
-    print(segments[1])
     return segments
