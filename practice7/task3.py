@@ -1,5 +1,6 @@
-nums = [4,-1,7,0,1,2,-1,5]
-k = 3
+nums = [1,1,1]
+k = 2
+
 
 def f(summ, nums):
     res = []

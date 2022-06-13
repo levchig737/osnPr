@@ -1,8 +1,3 @@
-from pickle import NEXT_BUFFER
-
-from numpy import number
-
-
 numbers = [4,-1,7,0,1,2,-1,5]
 lenght = len(numbers)
 
