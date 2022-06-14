@@ -1,45 +1,27 @@
-# Некорректное условие, т.к. все числа деляться на 1
 # Условие: n число из тех, которые деляться только на 2, 3 или 5
-from math import sqrt
 
-def prostie(start, end, pr):
-    for i in range(start, end):
-        for j in pr:
-            if j > int((sqrt(i)) + 1):
-                pr.append(i)
-                break
-            if (i % j == 0):
-                break
-        else:
-            pr.append(i)
+def delit(num):
+    # Делим на 5 пока нет остатка
+    while num % 5 == 0:
+        num //= 5
+    # Делим на 3 пока нет остатка
+    while num % 3 == 0:
+        num //= 3
+    # Делим на 2 пока нет остатка
+    while num % 2 == 0:
+        num //= 2
 
+    return num
+    
 
 n = 10
-pr = []
-prostie(2,n,pr)
-print(pr)
-
-res = []
+count = 0
 i = 1
-while len(res) != n:
+
+while count < n:
+    res = delit(i)
+    if res == 1:
+        count += 1
+        print(i)
+
     i += 1
-    if i > pr[len(pr)-1]:
-        prostie(i, i*2, pr)
-        i -= 1
-        continue 
-
-    if (i % 2 != 0) and (i % 3 != 0) and (i % 5 != 0):
-        continue
-    
-    for j in pr:
-        if j == 3 or j == 5 or j == 2:
-            continue
-        if i % j == 0:
-            break
-
-    res.append(i)
-    
-print(pr)
-print(res)
-print(len(res))
-print(res[len(res)-1])
