@@ -1,4 +1,3 @@
-from operator import is_
 from queue import Queue
 
 def is_proiz(wordDict, s):
